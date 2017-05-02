@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="debug" name="esb">
+	<Properties>
+		<Property name="logFolder">/var/log/capillary/esb/</Property>
+	</Properties>
+	<Appenders>
+		<RollingFile name="ACCESS_LOG" fileName="${logFolder}access.log" filePattern="${logFolder}access.log.%d{yyyyMMdd}"
+			append="true">
+			<PatternLayout>
+				<Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] [%X{requestId}] [%X{tenantId}] [%c{1}:%L] [%p] %m%n
+				</Pattern>
+			</PatternLayout>
+			<Policies>
+				<TimeBasedTriggeringPolicy interval="1" />
+			</Policies>
+		</RollingFile>
+		<RollingFile name="LOGFILE" fileName="${logFolder}esb.log" filePattern="${logFolder}esb.log.%d{yyyyMMdd}"
+			append="true">
+			<PatternLayout>
+				<Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] [%X{requestId}] [%X{tenantId}] [%c{1}:%L] [%p] %m%n
+				</Pattern>
+			</PatternLayout>
+			<Policies>
+				<TimeBasedTriggeringPolicy interval="1" />
+			</Policies>
+		</RollingFile>
+		<Console name="CONSOLE" target="SYSTEM_OUT">
+			<PatternLayout>
+				<Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] [%X{requestId}] [%X{tenantId}] [%c{1}:%L] [%p] %m%n
+				</Pattern>
+			</PatternLayout>
+		</Console>
+	</Appenders>
+	<Loggers>
+		<Root level="INFO">
+ 			<AppenderRef ref="CONSOLE" /> 
+		</Root>
+	</Loggers>
+</Configuration>

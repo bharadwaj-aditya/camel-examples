@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Implementation-Title: camel-samples
+Implementation-Version: 0.1-SNAPSHOT
+Built-By: aditya
+Implementation-Vendor-Id: com.capillary
+Build-Jdk: 1.8.0_121
+Implementation-URL: http://projects.spring.io/spring-boot/camel-sample
+ s/
+Created-By: Maven Integration for Eclipse
+Implementation-Vendor: Pivotal Software, Inc.
+
