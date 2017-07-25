@@ -24,4 +24,8 @@ public class HandlerBean {
         return "hey there: " + s;
     }
 
+    public String reply(int s) {
+        return "hey there: " + s;
+    }
+
 }
