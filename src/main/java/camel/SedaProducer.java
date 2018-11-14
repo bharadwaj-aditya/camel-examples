@@ -20,6 +20,7 @@ import org.apache.camel.Processor;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.impl.DefaultCamelContext;
 import org.apache.camel.processor.aggregate.AggregationStrategy;
+import org.apache.camel.processor.aggregate.GroupedMessageAggregationStrategy;
 
 /**
  * seda and aggregator
@@ -34,13 +35,13 @@ public class SedaProducer {
         context.addRoutes(new RouteBuilder() {
             public void configure() {
                 from("quartz://myGroup/myTimerName?cron=*+*+*+?+*+MON-FRI")
-                        .to("seda:fileWriter?pollTimeout=5000&size=5&blockWhenFull=true");
+                        .to("seda:fileWriter?pollTimeout=500000&size=5&blockWhenFull=true")/*;
 
                 from("seda:fileWriter")
-                        .process((ex) -> ex.getIn().setBody("asd"))
-                        .aggregate(constant(true), new ArrayListAggregationStrategy())
-                        .completionPredicate(new BatchSizePredicate(6))
-                        .completionInterval(5000)
+*/                        .process((ex) -> ex.getIn().setBody("asd"))
+                        .aggregate(constant(true), new GroupedMessageAggregationStrategy()).completionSize(2)
+                        //.completionPredicate(new BatchSizePredicate(6))
+                        //.completionInterval(5000)
                         .process(new ListToStringProcessor())
                         .to("file:src/main/resources/?fileName=testseda&fileExist=Append")
                         .end();
@@ -56,8 +57,10 @@ public class SedaProducer {
 
         @Override
         public void process(Exchange exchange) throws Exception {
-            List body = exchange.getIn().getBody(List.class);
-            String collect = (String) (body.stream().collect(Collectors.joining("\n")));
+            System.out.println("boo");
+            List<Message> body = exchange.getIn().getBody(List.class);
+            String collect = (String) (body.stream().map((e)->(String)(e.getBody())).collect(Collectors.joining("\n")));
+            System.out.println(collect);
             exchange.getIn().setBody(collect + new Date());
         }
     }

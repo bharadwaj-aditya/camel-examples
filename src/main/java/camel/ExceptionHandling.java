@@ -31,7 +31,7 @@ public class ExceptionHandling {
                         .split()
                         .tokenize("\n")
                         .to("direct:lines");
-                from("direct:lines").process(new ExceptionProcessor()).to("seda:goo").to(
+                from("direct:lines").doTry().process(new ExceptionProcessor()).doCatch(Exception.class).endDoTry().to("seda:goo").to(
                         "file:src/main/resources/?fileName=testexception&fileExist=Append");
                 
                 from("seda:errors").log("failed").end();
